@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "chie"
+version = "0.1.0"
+description = ""
+authors = ["Hannes Gustafsson <gssonhannes@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.110.0"
+uvicorn = {extras = ["standard"], version = "^0.27.1"}
+mangum = "^0.17.0"
+supabase = "^2.4.0"
+pydantic = "^2.6.3"
+openai = "^1.13.3"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dev = "chie.main:main"
