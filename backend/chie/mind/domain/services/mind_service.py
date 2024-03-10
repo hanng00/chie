@@ -4,7 +4,7 @@ from chie.mind.domain.entities.knowlet import Knowlet
 from chie.mind.domain.entities.question import Question
 from chie.mind.domain.ports.llm import LLMPort
 from chie.mind.utils import get_current_utc_time
-from logger import get_logger
+from chie.logger import get_logger
 
 PROMPT = (
     lambda learning_style, response_length: f"""

@@ -34,5 +34,5 @@ Creating a unique and engaging language for your learning application can enhanc
    - **ExploreLearn:** Discover new and trending Knowlets from the community.
    - **RemixHub:** Centralized hub for exploring and creating remixes.
 
-
-Remember, the goal is to make the language fun, engaging, and reflective of the collaborative and dynamic nature of your learning platform. Feel free to adapt and expand upon these suggestions to fit the specific vibe and vision you have for your application.
+## Infrastructure
+Inspirational Source: https://erik-ekberg.medium.com/terraform-ecs-fargate-example-1397d3ab7f02

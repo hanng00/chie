@@ -24,3 +24,6 @@ def main():
     reload = is_development
 
     uvicorn.run(uvicorn_app, host=host, port=port, reload=reload)
+
+if "__main__" == __name__:
+    main()
