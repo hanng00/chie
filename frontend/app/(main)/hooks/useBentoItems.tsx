@@ -1,4 +1,3 @@
-import { useMindApi } from "@/lib/api";
 import { Knowlet } from "@/lib/types/Mind";
 import {
   IconArrowWaveRightUp,
@@ -9,7 +8,6 @@ import {
   IconSignature,
   IconTableColumn,
 } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 const Skeleton = () => (
@@ -18,35 +16,35 @@ const Skeleton = () => (
   </div>
 );
 
-const useRandomIcon = () => {
-  const defaultClassname = "h-4 w-4 text-neutral-500";
-  const allIcons = [
-    <IconClipboardCopy className={defaultClassname} />,
-    <IconFileBroken className={defaultClassname} />,
-    <IconSignature className={defaultClassname} />,
-    <IconTableColumn className={defaultClassname} />,
-    <IconArrowWaveRightUp className={defaultClassname} />,
-    <IconBoxAlignTopLeft className={defaultClassname} />,
-    <IconBoxAlignRightFilled className={defaultClassname} />,
-  ];
-
-  const randomId = Math.floor(Math.random() * allIcons.length);
-
-  return allIcons[randomId];
-};
-
 const useBentoItems = ({ knowlets }: { knowlets: Knowlet[] | undefined }) => {
   const defaultHeader = <Skeleton />;
+
+  const getRandomIcon = () => {
+    const defaultClassname = "h-4 w-4 text-neutral-500";
+    const allIcons = [
+      <IconClipboardCopy key="icon1" className={defaultClassname} />,
+      <IconFileBroken key="icon2" className={defaultClassname} />,
+      <IconSignature key="icon3" className={defaultClassname} />,
+      <IconTableColumn key="icon4" className={defaultClassname} />,
+      <IconArrowWaveRightUp key="icon5" className={defaultClassname} />,
+      <IconBoxAlignTopLeft key="icon6" className={defaultClassname} />,
+      <IconBoxAlignRightFilled key="icon7" className={defaultClassname} />,
+    ];
+
+    const randomId = Math.floor(Math.random() * allIcons.length);
+
+    return allIcons[randomId];
+  };
 
   const bentoItems = useMemo(() => {
     if (!knowlets) {
       return undefined;
     }
-    return knowlets.map((item) => {
+    return knowlets.map((item, idx) => {
       return {
         ...item,
         header: defaultHeader,
-        icon: useRandomIcon(),
+        icon: getRandomIcon(),
       };
     });
   }, [knowlets]);

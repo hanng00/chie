@@ -6,7 +6,7 @@ from chie.mind.domain.entities.question import Question
 from chie.mind.domain.services.mind_service import MindService
 from chie.mind.adapters.openai_llm import OpenAILLM
 from chie.mind.dto.question_dto import QuestionDTO
-from logger import get_logger
+from chie.logger import get_logger
 from openai import AsyncOpenAI
 
 logger = get_logger(__name__)
