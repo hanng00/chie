@@ -1,3 +1,8 @@
+variable "environment" {
+  type    = string
+  default = "development"
+}
+
 variable "container_name" {
   type    = string
   default = "chie-backend"
