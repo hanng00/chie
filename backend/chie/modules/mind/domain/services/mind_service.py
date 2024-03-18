@@ -1,9 +1,9 @@
 import random
 from typing import Dict, List
-from chie.mind.domain.entities.knowlet import Knowlet
-from chie.mind.domain.entities.question import Question
-from chie.mind.domain.ports.llm import LLMPort
-from chie.mind.utils import get_current_utc_time
+from chie.modules.mind.domain.entities.knowlet import Knowlet
+from chie.modules.mind.domain.entities.question import Question
+from chie.modules.mind.domain.ports.llm import LLMPort
+from chie.modules.mind.utils import get_current_utc_time
 from chie.logger import get_logger
 
 PROMPT = (

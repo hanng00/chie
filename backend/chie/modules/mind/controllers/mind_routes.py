@@ -1,13 +1,14 @@
 import datetime
 import os
-from chie.mind.utils import get_current_utc_time
+from chie.modules.mind.utils import get_current_utc_time
 from fastapi import APIRouter
-from chie.mind.domain.entities.question import Question
-from chie.mind.domain.services.mind_service import MindService
-from chie.mind.adapters.openai_llm import OpenAILLM
-from chie.mind.dto.question_dto import QuestionDTO
+from chie.modules.mind.domain.entities.question import Question
+from chie.modules.mind.domain.services.mind_service import MindService
+from chie.modules.mind.adapters.openai_llm import OpenAILLM
+from chie.modules.mind.dto.question_dto import QuestionDTO
 from chie.logger import get_logger
 from openai import AsyncOpenAI
+import supabase as sb
 
 logger = get_logger(__name__)
 
@@ -20,6 +21,9 @@ def get_mind_service():
 
     mind_service = MindService(llm=llm)
     return mind_service
+
+
+sb.create_client
 
 
 # Display an endpoint for asking a question receiveing the response
