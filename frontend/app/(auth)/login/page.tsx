@@ -20,7 +20,6 @@ const LoginPage = () => {
   const { mutate: signIn } = useMutation({
     mutationFn: userApi.signIn,
     onSuccess: (data) => {
-      console.log("Signed In", data);
       router.push("/");
     },
     onError: (error) => {
