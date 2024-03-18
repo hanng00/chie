@@ -23,3 +23,13 @@ Among all open-source tools, the follow core technologies are used
 | Pinecone | Serverless Vector DB |
 
 This [post](https://dev.to/ionic/build-mobile-apps-with-tailwind-css-next-js-ionic-framework-and-capacitor-3kij) explains it brilliantly.
+
+## Roadmap
+
+1. Implement Auth / Stateful DB.
+
+- Allow users (and our backend) to view previous questions and answers
+
+2. Streaming Generative UI
+
+3. Pinecone Embeddings

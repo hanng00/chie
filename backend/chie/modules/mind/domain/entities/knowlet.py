@@ -1,7 +1,7 @@
 from datetime import datetime
 from pydantic import BaseModel
 
-from chie.mind.domain.entities.question import Question
+from chie.modules.mind.domain.entities.question import Question
 
 
 class Knowlet(BaseModel):

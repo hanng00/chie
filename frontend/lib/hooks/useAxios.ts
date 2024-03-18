@@ -1,5 +1,6 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { DEFAULT_BACKEND_URL } from "../config/CONSTANTS";
+import { useSupabase } from "../context/SupabaseProvider";
 
 
 const axiosInstance = axios.create({
@@ -7,14 +8,27 @@ const axiosInstance = axios.create({
 })
 
 export const useAxios = (): { axiosInstance: AxiosInstance } => {
-  // TODO - Add Session / Auth here
+  let { session } = useSupabase()
+  const { supabase } = useSupabase()
 
   axiosInstance.interceptors.request.use(
     async (value: InternalAxiosRequestConfig) => {
-      const token = "NOT-IMPLEMENTED"
-      value.headers["Authorization"] = `Bearer ${token}`
+      const tokenIsValid = session?.expires_at && session.expires_at * 1000 > Date.now()
+
+      if (!tokenIsValid) {
+        const { data, error } = await supabase.auth.refreshSession()
+        if (error) {
+          throw error
+        }
+        session = data.session
+      }
+
+      value.headers["Authorization"] = `Bearer ${session?.access_token ?? ""}`
 
       return value
+    },
+    (error: AxiosError) => {
+      return Promise.reject(error)
     }
   )
 

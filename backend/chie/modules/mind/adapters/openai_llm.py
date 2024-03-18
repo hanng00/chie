@@ -1,4 +1,4 @@
-from chie.mind.domain.ports.llm import LLMPort
+from chie.modules.mind.domain.ports.llm import LLMPort
 from openai import AsyncOpenAI
 
 
