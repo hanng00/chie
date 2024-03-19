@@ -10,7 +10,6 @@ const axiosInstance = axios.create({
 export const useAxios = (): { axiosInstance: AxiosInstance } => {
   let { session } = useSupabase()
   const { supabase } = useSupabase()
-  console.log("supabase", supabase)
 
   axiosInstance.interceptors.request.use(
     async (value: InternalAxiosRequestConfig) => {
@@ -23,7 +22,6 @@ export const useAxios = (): { axiosInstance: AxiosInstance } => {
         }
         session = data.session
       }
-      console.log("session", session)
       value.headers["Authorization"] = `Bearer ${session?.access_token ?? ""}`
 
       return value

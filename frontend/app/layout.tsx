@@ -6,6 +6,7 @@ import { Poppins as FontSans } from "next/font/google";
 import App from "./App";
 import { SupabaseProvider } from "@/lib/context/SupabaseProvider/supabase-provider";
 import getServerSupabaseClient from "@/lib/helpers/getServerSupabaseClient";
+import { AI } from "@/lib/actions/main";
 
 export const metadata: Metadata = {
   title: "Chie",
@@ -47,7 +48,9 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <SupabaseProvider session={session}>
-            <App>{children}</App>
+            <AI>
+              <App>{children}</App>
+            </AI>
           </SupabaseProvider>
         </ThemeProvider>
       </body>

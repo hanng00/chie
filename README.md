@@ -26,10 +26,10 @@ This [post](https://dev.to/ionic/build-mobile-apps-with-tailwind-css-next-js-ion
 
 ## Roadmap
 
-1. Implement Auth / Stateful DB.
+1. Implement Auth
 
 - Allow users (and our backend) to view previous questions and answers
 
 2. Streaming Generative UI
 
-3. Pinecone Embeddings
+3. LANGCHAIN RAG - Pinecone?
