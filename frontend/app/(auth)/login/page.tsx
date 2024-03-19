@@ -17,7 +17,7 @@ type FormData = z.infer<typeof userAuthSchema>;
 const LoginPage = () => {
   const userApi = useUserApi();
   const router = useRouter();
-  const { mutate: signIn } = useMutation({
+  const { mutate: signIn, isPending } = useMutation({
     mutationFn: userApi.signIn,
     onSuccess: (data) => {
       router.push("/");
@@ -53,7 +53,7 @@ const LoginPage = () => {
           </p>
         </div>
 
-        <UserAuthForm onFormSubmit={onFormSubmit} />
+        <UserAuthForm onFormSubmit={onFormSubmit} isSubmitting={isPending} />
 
         <p className="px-8 text-center text-sm text-muted-foreground">
           <Link

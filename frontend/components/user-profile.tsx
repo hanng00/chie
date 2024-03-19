@@ -1,5 +1,5 @@
 import { useUserApi } from "@/lib/api/user/useUserApi";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./spinner";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -9,22 +9,19 @@ const UserProfile = () => {
   const router = useRouter();
 
   const userApi = useUserApi();
+
+  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["me"],
     queryFn: userApi.getMe,
-    retry: 2,
+    
   });
 
   const { mutate: signOut, isPending } = useMutation({
     mutationFn: userApi.signOut,
-    onError: (error, variables, context) => {
-        // If the error is a 401, the user is already signed out
-        // so we can just refresh the page
-        console.log("Error", error, variables, context);
-    },
     onSuccess: () => {
-      console.log("Signed Out");
       router.refresh();
+      queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });
 

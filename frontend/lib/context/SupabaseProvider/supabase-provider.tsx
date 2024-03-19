@@ -12,7 +12,7 @@ export const SupabaseContext = createContext<SupabaseContextType | undefined>(
 
 export const SupabaseProvider = ({
   children,
-  session
+  session,
 }: {
   children: React.ReactNode;
   session: Session | null;
@@ -23,6 +23,19 @@ export const SupabaseProvider = ({
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
   );
+
+  const router = useRouter();
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      router.refresh();
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [router, supabase]);
 
   return (
     <SupabaseContext.Provider value={{ supabase, session }}>
