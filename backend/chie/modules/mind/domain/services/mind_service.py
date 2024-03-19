@@ -1,5 +1,6 @@
 import random
 from typing import Dict, List
+import asyncio
 from chie.modules.mind.domain.entities.knowlet import Knowlet
 from chie.modules.mind.domain.entities.question import Question
 from chie.modules.mind.domain.ports.llm import LLMPort
@@ -94,25 +95,33 @@ class MindService:
         self.prompt = PROMPT
 
     async def ask_mind(self, question: Question) -> List[Knowlet]:
-        random_learning_styles = random.sample(self.learning_style, 3)
+        random_learning_styles = random.sample(self.learning_style, 5)
         logger.info(random_learning_styles)
 
-        knowlets = []
+        async_tasks = []
         for ls in random_learning_styles:
             name, instruction = ls["name"], ls["instruction"]
             instruction_prompt = self.prompt(instruction, 500)
-            completion = await self.llm.completion(
-                instruction=instruction_prompt, prompt=question.content
-            )
+            async_task = self.process_learning_style(name, instruction_prompt, question)
+            async_tasks.append(async_task)
 
-            knowlet = Knowlet(
-                title=name,
-                content=completion,
-                question=question,
-                created_at=get_current_utc_time(),
-            )
-            knowlets.append(knowlet)
+        logger.info("Processing learning styles")
+        knowlets = await asyncio.gather(*async_tasks)
         return knowlets
+
+    async def process_learning_style(
+        self, name: str, instruction_prompt: str, question: Question
+    ) -> Knowlet:
+        completion = await self.llm.completion(
+            instruction=instruction_prompt, prompt=question.content
+        )
+        logger.info(f"Completion for {name}: {completion}")
+        return Knowlet(
+            title=name,
+            content=completion,
+            question=question,
+            created_at=get_current_utc_time(),
+        )
 
     async def get_knowlets(self) -> List[Knowlet]:
         current_utc_time = get_current_utc_time()
