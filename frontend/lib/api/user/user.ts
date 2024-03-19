@@ -7,8 +7,17 @@ import { UserProfile } from "./types";
 export const getMe = async (
   axiosInstance: AxiosInstance
 ): Promise<UserProfile> => {
-  const response = await axiosInstance.get("/user/me")
-  return response.data
+  const response = await axiosInstance
+    .get("/user/me")
+    .then((res) => res.data)
+    .catch((error) => {
+      // Check if we received a 401, if so, the user is not authenticated.
+      if (error.response.status === 403) {
+        return null
+      }
+      throw error
+    })
+  return response
 }
 
 export const signUpOLD = async (

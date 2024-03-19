@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { userAuthSchema } from "@/lib/validations/auth";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../../components/ui/input";
@@ -13,9 +13,10 @@ type FormData = z.infer<typeof userAuthSchema>;
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement>  {
   onFormSubmit: (data: FormData) => void;
+  isSubmitting: boolean;
 }
 
-const UserAuthForm = ({ className, onFormSubmit, ...props }: UserAuthFormProps) => {
+const UserAuthForm = ({ className, onFormSubmit, isSubmitting, ...props }: UserAuthFormProps) => {
   const {
     register,
     handleSubmit,
@@ -61,7 +62,7 @@ const UserAuthForm = ({ className, onFormSubmit, ...props }: UserAuthFormProps) 
               <p className="text-sm text-red-500">{errors.password.message}</p>
             )}
           </div>
-          <Button type="submit" variant="default" disabled={isLoading}>
+          <Button type="submit" variant="default" disabled={isSubmitting}>
             Sign in with Email
           </Button>
         </div>

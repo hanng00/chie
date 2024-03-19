@@ -13,16 +13,15 @@ export const useAxios = (): { axiosInstance: AxiosInstance } => {
 
   axiosInstance.interceptors.request.use(
     async (value: InternalAxiosRequestConfig) => {
-      const tokenIsValid = session?.expires_at && session.expires_at * 1000 > Date.now()
+      const tokenIsNotValid = session?.expires_at && session.expires_at * 1000 < Date.now()
 
-      if (!tokenIsValid) {
+      if (tokenIsNotValid) {
         const { data, error } = await supabase.auth.refreshSession()
         if (error) {
           throw error
         }
         session = data.session
       }
-
       value.headers["Authorization"] = `Bearer ${session?.access_token ?? ""}`
 
       return value
