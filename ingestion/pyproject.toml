@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "ingestion"
+version = "0.1.0"
+description = ""
+authors = ["Hannes Gustafsson <hannes.gustafsson@burtcorp.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"
+pandas = "^2.2.1"
+matplotlib = "^3.8.3"
+jupyter = "^1.0.0"
+seaborn = "^0.13.2"
+pydantic = "^2.6.4"
+langchain = "^0.1.13"
+langchain-community = "^0.0.29"
+openai = "^1.14.2"
+tiktoken = "^0.6.0"
+pinecone-client = "^3.1.0"
+bs4 = "^0.0.2"
+markdown = "^3.6"
+unstructured = "^0.12.6"
+pypdf2 = "^3.0.1"
+pypdf = "^4.1.0"
+python-dotenv = "^1.0.1"
+langchain-pinecone = "^0.0.3"
+langchain-openai = "^0.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
