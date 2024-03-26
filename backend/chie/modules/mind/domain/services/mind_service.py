@@ -15,25 +15,6 @@ from chie.logger import get_logger
 from uuid import UUID
 
 
-MOCK_LIST_KNOWLETS = [
-    {
-        "title": "Narrative Learning",
-        "content": """## Reading through the topic of narrative learning""",
-    },
-    {
-        "title": "Socratic Dialogues",
-        "content": """## Understanding Computational Neuroscience Through Real-World Problems
-
-Imagine designing a brain-computer interface for paralyzed patients to control robotic limbs. 
-1. Identify the neural circuitry involved.
-2. Research how neural signals can be decoded into movement commands.
-3. Collaborate to refine algorithms for real-time processing.
-4. Apply computational neuroscience principles to improve accuracy and responsiveness.
-5. Test and troubleshoot the system in simulated and real-world scenarios.
-6. Reflect on the ethical implications and societal impact of your work.""",
-    },
-]
-
 logger = get_logger(__name__)
 N_LEARNING_STYLES = 3
 

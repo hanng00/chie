@@ -31,7 +31,10 @@ class SupabaseMindRepository(MindRepository):
     def list_knowlets(self, user_id: str) -> Knowlet:
         # Only list the user's knowlets
         data = (
-            self.supabase.table("knowlet").select("*").execute()
+            self.supabase.table("knowlet")
+            .select("*")
+            .order("created_at", desc=True)
+            .execute()
         ).data
 
         return [Knowlet(**d) for d in data]
