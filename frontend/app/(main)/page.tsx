@@ -1,14 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import Navbar from "./components/navbar";
-import { BentoGrid, BentoGridItem } from "@/components/bento-grid";
 import ChatInput from "./components/chat-input";
 import useBentoItems from "./hooks/useBentoItems";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMindApi } from "@/lib/api";
-import { useState } from "react";
-import { Spinner } from "@/components/spinner";
+import BentoFeed from "./components/bento-feed";
+import { FormData as MessageFormData } from "./components/chat-input";
 
 const MainPage = () => {
   const mindApi = useMindApi();
@@ -22,17 +20,16 @@ const MainPage = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: mindApi.askMind,
     onSuccess: (data) => {
-      queryClient.setQueryData(["knowlets"], data);
+      queryClient.setQueryData(
+        ["knowlets"],
+        knowlets ? [...knowlets, data] : [data]
+      );
     },
   });
   const { bentoItems } = useBentoItems({ knowlets });
 
-  /* CHAT INPUT THINGY */
-  const [input, setInput] = useState("");
-
-  const handleSend = () => {
-    mutate(input);
-    setInput("");
+  const handleSend = (data: MessageFormData) => {
+    mutate(data.message);
   };
 
   return (
@@ -40,35 +37,10 @@ const MainPage = () => {
       <Navbar />
 
       <div className="flex-1 flex overflow-y-auto scroll-smooth w-full px-2">
-        <BentoGrid className="mx-auto">
-          {!bentoItems ? (
-            <div>Loading ...</div>
-          ) : (
-            bentoItems.map((item, i) => (
-              <BentoGridItem
-                key={i}
-                title={item.title}
-                description={item.content}
-                header={item.header}
-                icon={item.icon}
-                className={i === 2 || i === 4 ? "md:col-span-2" : ""}
-                variant={i % 4 === 0 ? "primary" : "secondary"}
-              />
-            ))
-          )}
-        </BentoGrid>
+        <BentoFeed bentoItems={bentoItems} />
       </div>
-      <div className="w-full flex flex-row items-center justify-center space-x-2">
-        <ChatInput
-          value={input}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setInput(e.target.value)
-          }
-          disabled={isPending}
-        />
-        <Button className="w-24" variant="default" disabled={isPending} onClick={handleSend}>
-          {!isPending ? "Send": <Spinner />}
-        </Button>
+      <div className="w-full flex justify-center">
+        <ChatInput onSubmit={handleSend} disabled={isPending} />
       </div>
     </div>
   );
