@@ -1,14 +1,15 @@
-import datetime
 import os
-from chie.modules.mind.utils import get_current_utc_time
-from fastapi import APIRouter
-from chie.modules.mind.domain.entities.question import Question
+from chie.middleware.auth.auth_bearer import AuthBearer, get_current_user
+from fastapi import APIRouter, Depends
 from chie.modules.mind.domain.services.mind_service import MindService
+from chie.modules.mind.adapters.supabase_mind_repository import SupabaseMindRepository
 from chie.modules.mind.adapters.openai_llm import OpenAILLM
-from chie.modules.mind.dto.question_dto import QuestionDTO
+from chie.modules.mind.dto.input import QuestionInput
 from chie.logger import get_logger
 from openai import AsyncOpenAI
-import supabase as sb
+from chie.modules.mind.dto.question import CreateQuestionProperties
+from chie.modules.user.entity import UserIdentity
+from chie.settings.supabase import supabase_client
 
 logger = get_logger(__name__)
 
@@ -19,32 +20,33 @@ def get_mind_service():
     client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     llm = OpenAILLM(openai=client)
 
-    mind_service = MindService(llm=llm)
+    mind_repository = SupabaseMindRepository(supabase=supabase_client)
+
+    mind_service = MindService(llm=llm, mind_repository=mind_repository)
     return mind_service
 
 
-sb.create_client
-
-
 # Display an endpoint for asking a question receiveing the response
-@mind_router.post("/ask")
-async def ask_mind(question: QuestionDTO):
+@mind_router.post("/ask", dependencies=[Depends(AuthBearer())], tags=["Chat"])
+async def ask_mind(
+    question: QuestionInput, current_user: UserIdentity = Depends(get_current_user)
+):
     logger.info(f"Received question: {question.question}")
     mind_service = get_mind_service()
 
-    domain_question = Question(
-        content=question.question,
-        created_at=get_current_utc_time(),
+    question_properties = CreateQuestionProperties(
+        user_id=current_user.id, content=question.question
     )
-    knowlet = await mind_service.ask_mind(question=domain_question)
+
+    knowlet = await mind_service.ask_mind(question_properties=question_properties)
     return knowlet
 
 
-@mind_router.get("/knowlets")
-async def get_mind():
+@mind_router.get("/knowlets", dependencies=[Depends(AuthBearer())], tags=["Chat"])
+async def get_mind(current_user: UserIdentity = Depends(get_current_user)):
     """List all knowlets for a mind."""
     logger.info("Listing all knowlets for a mind.")
 
     mind_service = get_mind_service()
-    knowlets = await mind_service.get_knowlets()
+    knowlets = await mind_service.list_knowlets(user_id=current_user.id)
     return knowlets
