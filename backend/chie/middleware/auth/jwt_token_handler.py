@@ -6,11 +6,13 @@ from jose import jwt
 from jose.exceptions import JWTError
 from chie.modules.user.entity.user_identity import UserIdentity
 
+from chie.config import get_secret_jwt_key
+
 ALGORITHM = "HS256"
 
 
 def get_secret_key():
-    SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
+    SECRET_KEY = get_secret_jwt_key()
 
     if not SECRET_KEY:
         raise ValueError("JWT_SECRET_KEY environment variable not set")

@@ -15,6 +15,9 @@ pydantic = "^2.6.3"
 openai = "^1.13.3"
 python-dotenv = "^1.0.1"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+psycopg2-binary = "^2.9.9"
+sqlalchemy = "^2.0.29"
+alembic = "^1.13.1"
 
 
 [build-system]

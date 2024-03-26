@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from chie.middleware.auth.jwt_token_handler import decode_access_token, verify_token
 from chie.modules.user.entity.user_identity import UserIdentity
-
+from chie.config import bypass_authentication
 
 class AuthBearer(HTTPBearer):
     def __init__(self, auto_error: bool = True):
@@ -36,7 +36,7 @@ class AuthBearer(HTTPBearer):
         self,
         token: str,
     ) -> UserIdentity:
-        if os.environ.get("AUTHENTICATE") == "false":
+        if bypass_authentication():
             return self.get_test_user()
         elif verify_token(token):
             return decode_access_token(token)
